@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu1"
+        android:title="공유" />
+    <item
+        android:id="@+id/menu2"
+        android:title="링크 복사" />
+    <item
+        android:id="@+id/menu3"
+        android:title="보관" />
+    <item
+        android:id="@+id/menu4"
+        android:title="수정" />
+    <item
+        android:id="@+id/menu5"
+        android:title="삭제" />
+    <item
+        android:id="@+id/menu6"
+        android:title="댓글 기능 해제" />
+</menu>
