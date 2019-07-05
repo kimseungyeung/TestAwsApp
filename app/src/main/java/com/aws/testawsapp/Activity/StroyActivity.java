@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Tab1Activity extends AppCompatActivity implements View.OnClickListener {
+public class StroyActivity extends AppCompatActivity implements View.OnClickListener {
     RecyclerView rl_story;
     public String path;
     ImageButton imbtn_camera;
@@ -66,7 +66,13 @@ public class Tab1Activity extends AppCompatActivity implements View.OnClickListe
         List<CommentData> cdata=new ArrayList<>();
        for(int i=0; i<10; i++) {
            CommentData cda = new CommentData();
-           cda.setComment_name("박석원");
+            cda.setType(1);
+           if(i==9){
+               cda.setType(2);
+               cda.setRecomment_id(cdata.get(1).getComment_name());
+               cda.setRecomment_index(1);
+           }
+            cda.setComment_name("박석원");
            cda.setComment_text("이거뭐냐");
            cda.setComment_profile(bitmap);
            cdata.add(cda);
@@ -197,4 +203,17 @@ public class Tab1Activity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+    StoryAdapter.ItemClick clickevent =new StoryAdapter.ItemClick() {
+        @Override
+        public void onClick(View view, int position, StoryData sd) {
+            switch (view.getId()){
+                case R.id.imbtn_story_comment:
+                    break;
+                case R.id.imbtn_story_collection:
+                    break;
+                case R.id.imbtn_story_like:
+                    break;
+            }
+        }
+    };
 }

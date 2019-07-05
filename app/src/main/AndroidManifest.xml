@@ -32,7 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.Tab1Activity"
+        <activity android:name=".Activity.StroyActivity"
             android:windowSoftInputMode="adjustResize"
         />
         <activity android:name=".Activity.Tab2Activity"/>

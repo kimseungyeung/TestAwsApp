@@ -19,7 +19,8 @@ import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
-public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.Holder>{
+public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.Holder> implements View.OnClickListener {
+    private ItemClick itemClick;
     Context context;
     List<StoryData> storyDataList;
 
@@ -27,6 +28,31 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.Holder>{
         this.storyDataList=sdatalist;
         this.context=ctx;
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.imbtn_story_collection:
+                break;
+            case R.id.imbtn_story_comment:
+                break;
+            case R.id.imbtn_story_like:
+                break;
+            case R.id.imbtn_story_send_meessage:
+                break;
+            case R.id.rl_comment:
+                break;
+        }
+    }
+
+    public interface ItemClick {
+        public void onClick(View view,int position,StoryData sd);
+
+    }
+    //아이템 클릭시 실행 함수 등록 함수
+    public void setItemClick(ItemClick itemClick) {
+        this.itemClick = itemClick;
     }
     @NonNull
     @Override
@@ -36,18 +62,53 @@ public class StoryAdapter extends RecyclerView.Adapter<StoryAdapter.Holder>{
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StoryAdapter.Holder holder, int position) {
+    public void onBindViewHolder(@NonNull StoryAdapter.Holder holder,final int position) {
 
-        StoryData sdata=storyDataList.get(position);
+        final StoryData sdata=storyDataList.get(position);
         Glide.with(context).load(sdata.getStory_profile()).apply(RequestOptions.circleCropTransform()).into(holder.imbtn_mini_profile);
         holder.tv_story_name.setText(sdata.getStory_name());
         List<CommentData> cdata=sdata.getCommentlist();
-        CommentAdapter cadapter= new CommentAdapter(cdata,context);
+        CommentAdapter cadapter= new CommentAdapter(1,cdata,context);
         holder.iv_story_picture.setImageBitmap(sdata.getStory_picture());
         holder.iv_story_picture.setImageBitmap(sdata.getStory_picture());
         holder.rl_comment.setAdapter(cadapter);
         Glide.with(context).load(sdata.getStory_profile()).apply(RequestOptions.circleCropTransform()).into(holder.iv_comment_profile);
         holder.rl_comment.setLayoutManager(new LinearLayoutManager(context));
+        holder.imbtn_story_like.setOnClickListener(this);
+        holder.rl_comment.setOnClickListener(this);
+        holder.imbtn_story_like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemClick != null){
+                    itemClick.onClick(v,position,sdata);
+                }
+            }
+        });
+        holder.imbtn_story_collection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemClick != null){
+                    itemClick.onClick(v,position,sdata);
+                }
+            }
+        });
+        holder.imbtn_story_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemClick != null){
+                    itemClick.onClick(v,position,sdata);
+                }
+            }
+        });
+        holder.imbtn_story_sendmessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(itemClick != null){
+                    itemClick.onClick(v,position,sdata);
+                }
+            }
+        });
+
     }
 
     @Override

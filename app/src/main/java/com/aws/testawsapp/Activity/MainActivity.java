@@ -44,7 +44,7 @@ public class MainActivity extends TabActivity {
        Intent ii= new Intent(getApplicationContext(),
                 Tab3Activity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        TabSpec.setContent(new Intent(this, new Tab1Activity().getClass()));
+        TabSpec.setContent(new Intent(this, new StroyActivity().getClass()));
         Tab2Spec.setIndicator(bv2);
         Tab2Spec.setContent(new Intent(this, new Tab2Activity().getClass()));
         Tab3Spec.setIndicator(bv3);
