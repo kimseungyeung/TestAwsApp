@@ -14,4 +14,5 @@ public class StoryData {
    private boolean like_check;
    private boolean collection_check;
    private List<CommentData> commentlist;
+
 }

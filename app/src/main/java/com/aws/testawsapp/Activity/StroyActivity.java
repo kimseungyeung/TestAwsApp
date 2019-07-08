@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 
 import com.aws.testawsapp.Adapter.StoryAdapter;
 import com.aws.testawsapp.Data.CommentData;
+import com.aws.testawsapp.Data.FriendData;
 import com.aws.testawsapp.Data.StoryData;
 import com.aws.testawsapp.R;
 
@@ -61,8 +62,21 @@ public class StroyActivity extends AppCompatActivity implements View.OnClickList
         Bitmap bitmap2= BitmapFactory.decodeFile(f2.getAbsolutePath());
         Bitmap bitmap3= BitmapFactory.decodeFile(f3.getAbsolutePath());
 
-
-
+        FriendData fdata= new FriendData();
+        fdata.setName("박석원");
+        fdata.setProfile(bitmap);
+        FriendData fdata2 = new FriendData();
+        fdata2.setName("김규종");
+        fdata2.setProfile(bitmap2);
+        List<FriendData> fdatalist = new ArrayList<>();
+        fdatalist.add(fdata);
+        fdatalist.add(fdata2);
+        fdatalist.add(fdata);
+        fdatalist.add(fdata2);
+        fdatalist.add(fdata);
+        fdatalist.add(fdata2);
+        fdatalist.add(fdata);
+        fdatalist.add(fdata2);
         List<CommentData> cdata=new ArrayList<>();
        for(int i=0; i<10; i++) {
            CommentData cda = new CommentData();
@@ -86,7 +100,7 @@ public class StroyActivity extends AppCompatActivity implements View.OnClickList
         sd.setStory_profile(bitmap3);
         sd.setStory_picture(bitmap2);
         sdatalist.add(sd);
-        StoryAdapter sadapter=new StoryAdapter(sdatalist,this);
+        StoryAdapter sadapter=new StoryAdapter(fdatalist,sdatalist,this);
         rl_story=(RecyclerView)findViewById(R.id.rl_story);
         rl_story.setAdapter(sadapter);
         rl_story.setLayoutManager(new LinearLayoutManager(this));
