@@ -45,8 +45,6 @@ public class StroyActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tab1_activity);
-
-
         component();
     }
     public void component(){
@@ -104,6 +102,7 @@ public class StroyActivity extends AppCompatActivity implements View.OnClickList
         rl_story=(RecyclerView)findViewById(R.id.rl_story);
         rl_story.setAdapter(sadapter);
         rl_story.setLayoutManager(new LinearLayoutManager(this));
+
     }
     public Bitmap getBitmap(Uri uri){
         Bitmap bitmap = null;
