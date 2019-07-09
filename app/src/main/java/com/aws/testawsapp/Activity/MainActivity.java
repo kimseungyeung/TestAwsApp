@@ -23,7 +23,7 @@ public class MainActivity extends TabActivity {
         component();
     }
     public void component(){
-         i=   new Intent(this, new Tab3Activity().getClass());
+         i=   new Intent(this, new CameraActivity().getClass());
         tabHost = (TabHost) findViewById(android.R.id.tabhost);
 
         /** 새로운 탭을 추가하기 위한 TabSpect */

@@ -38,6 +38,8 @@
         <activity android:name=".Activity.Tab2Activity"/>
         <activity android:name=".Activity.Tab3Activity"/>
         <activity android:name=".Activity.Tab4Activity"/>
+        <activity android:name=".Activity.CameraActivity"/>
+        <activity android:name=".Activity.ResultCameraActivity"/>
     </application>
 
 </manifest>
