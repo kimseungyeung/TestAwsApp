@@ -1,12 +1,15 @@
 package com.aws.testawsapp.Activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -29,8 +32,10 @@ public class ResultCameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.result_camera_activity);
         Intent i = getIntent();
-        Uri uri =i.getParcelableExtra("image");
-        imageFilePath=uri.getPath();
+        String path =i.getStringExtra("image");
+        File f= new File(path);
+        imageFilePath=f.getAbsolutePath();
+
         ExifInterface exif = null;
 
         try {
@@ -48,8 +53,9 @@ public class ResultCameraActivity extends AppCompatActivity {
         } else {
             exifDegree = 0;
         }
-        Bitmap bit =getBitmap(uri);
-        resultpicture = rotate(bit,exifDegree);
+       // Bitmap bit =getBitmap(uri);
+        Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+        resultpicture = rotate(bitmap,exifDegree);
         iv_result_picture =(ImageView)findViewById(R.id.iv_result);
         iv_result_picture.setImageBitmap(resultpicture);
     }
@@ -102,4 +108,5 @@ public class ResultCameraActivity extends AppCompatActivity {
         imageFilePath = image.getAbsolutePath();
         return image;
     }
+
 }
