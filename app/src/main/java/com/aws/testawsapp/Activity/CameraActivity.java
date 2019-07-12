@@ -17,6 +17,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.nfc.Tag;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -31,8 +33,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.hardware.Camera;
 
+import com.aws.testawsapp.Data.CommentData;
 import com.aws.testawsapp.R;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -41,18 +45,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class CameraActivity extends AppCompatActivity implements SurfaceHolder.Callback, View.OnClickListener, Camera.AutoFocusCallback, SensorEventListener {
+public class CameraActivity extends AppCompatActivity implements SurfaceHolder.Callback, View.OnClickListener, Camera.AutoFocusCallback {
     private int CAMERA_FACING = Camera.CameraInfo.CAMERA_FACING_FRONT;
     SurfaceView sv_camera_view;
     SurfaceHolder sv_camera_holder;
     Camera mcamera;
     ImageButton imgbtn_camera;
     String imageFilePath;
-    SensorManager sm;
-    Sensor s;
-    int rotation = 90;
-    boolean checkrotate=false;
-
+    boolean checkrotate = false;
+    Camera.CameraInfo mCameraInfo;
+   public  int torientation=90;
+   OrientationEventListener orientationEventListener;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,9 +65,6 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
     }
 
     public void component() {
-        sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        s = sm.getDefaultSensor(Sensor.TYPE_ORIENTATION);
-        sm.registerListener(this, s, SensorManager.SENSOR_DELAY_UI);
         sv_camera_view = (SurfaceView) findViewById(R.id.sv_camera_view);
         imgbtn_camera = (ImageButton) findViewById(R.id.imbtn_mcamera);
         imgbtn_camera.setOnClickListener(this);
@@ -77,6 +77,37 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         sv_camera_holder = sv_camera_view.getHolder();
         sv_camera_holder.addCallback(this);
         sv_camera_holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+        Camera.getCameraInfo(CAMERA_FACING, cameraInfo);
+        orientationEventListener = new OrientationEventListener(this,SensorManager.SENSOR_DELAY_NORMAL){
+            @Override
+            public void onOrientationChanged(int orientation) {
+                if(checkrotate) {
+                    if (torientation!=6&&orientation >= 315 || orientation < 60) {
+
+                        torientation = ExifInterface.ORIENTATION_ROTATE_90;
+                    }
+
+                    // 90˚
+                    else if (torientation!=3&&orientation >= 60 && orientation < 135) {
+
+                        torientation = ExifInterface.ORIENTATION_ROTATE_180;
+                    }
+
+                    // 180˚
+                    else if (torientation!=8&&orientation >= 135 && orientation < 225) {
+                        torientation = ExifInterface.ORIENTATION_ROTATE_270;
+                    }
+
+                    // 270˚ (landscape)
+                    else if (torientation!=0&&orientation >= 225 && orientation < 315) {
+                        torientation = 0;
+                    }
+                }
+            }
+        };
+        orientationEventListener.enable();
+        mCameraInfo = cameraInfo;
 
     }
 
@@ -87,21 +118,9 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             if (mcamera == null) {
                 mcamera = Camera.open();
             }
+            //setCameraDisplayOrientation(this,CAMERA_FACING,mcamera);
 
-            // 카메라 설정
-            Camera.Parameters parameters = mcamera.getParameters();
 
-   /*         // 카메라의 회전이 가로/세로일때 화면을 설정한다.
-            if (getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE) {
-                parameters.set("orientation", "portrait");
-                mcamera.setDisplayOrientation(90);
-                parameters.setRotation(90);
-            } else {
-                parameters.set("orientation", "landscape");
-                mcamera.setDisplayOrientation(0);
-                parameters.setRotation(0);
-            }
-            mcamera.setParameters(parameters);*/
 
             mcamera.setPreviewDisplay(sv_camera_holder);
 
@@ -134,29 +153,14 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                 mcamera.setDisplayOrientation(90);
                 // For Android Version 2.0 and above
                 parameters.setRotation(90);
-            }else{
+            } else {
                 parameters.set("orientation", "landscape");
                 // For Android Version 2.2 and above
                 mcamera.setDisplayOrientation(0);
                 // For Android Version 2.0 and above
                 parameters.setRotation(0);
             }
-            // 화면 회전시 사진 회전 속성을 맞추기 위해 설정한다.
-     /*       int rotation = getWindowManager().getDefaultDisplay().getRotation();
-            mcamera.setDisplayOrientation(rotation);
-            if (rotation == Surface.ROTATION_0) {
-                mcamera .setDisplayOrientation(90);
-                parameters.setRotation(90);
-            }else if(rotation == Surface.ROTATION_90){
-                mcamera .setDisplayOrientation(0);
-                parameters.setRotation(0);
-            }else if(rotation == Surface.ROTATION_180){
-                mcamera .setDisplayOrientation(270);
-                parameters.setRotation(270);
-            }else{
-                mcamera .setDisplayOrientation(180);
-                parameters.setRotation(180);
-            }*/
+
 
             // 변경된 화면 넓이를 설정한다.
             //  parameters.setPreviewSize(previewSize.width, previewSize.height);
@@ -186,9 +190,8 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.imbtn_mcamera:
-                checkrotate=true;
-
-                //  setCameraDisplayOrientation(this,CAMERA_FACING,mcamera);
+                checkrotate = true;
+                //setCameraDisplayOrientation(this,CAMERA_FACING,mcamera);
                 mcamera.takePicture(null, null, pcall);
                 break;
         }
@@ -204,33 +207,30 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         @Override
         public void onPictureTaken(byte[] data, Camera camera) {
             try {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-                checkrotate=false;
-
-                File pictureFile = getOutputMediaFile();
+               File pictureFile = getOutputMediaFile();
+                Log.e("path file 11111111", ""+pictureFile);
                 if (pictureFile == null) {
                     return;
                 }
-
-                FileOutputStream fos = new FileOutputStream(pictureFile);
-                fos.write(data);
-                fos.close();
-
-                Uri pictureUri = FileProvider.getUriForFile(getApplicationContext(), getPackageName(), pictureFile);
-               String picturepath= pictureFile.getAbsolutePath();
-
                 try {
-                    FileOutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory().getAbsolutePath() + "/test.jpg");
-                           bitmap= rotate(bitmap,rotation);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
-                    out.close();
+                    FileOutputStream fos = new FileOutputStream(pictureFile);
+                    fos.write(data);
+                    fos.close();
+                    ExifInterface exif=new ExifInterface(pictureFile.getAbsolutePath());
+                    exif.setAttribute(ExifInterface.TAG_ORIENTATION,String.valueOf(torientation));
+                    exif.saveAttributes();
+                    Intent mediaScanIntent = new Intent( Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                    mediaScanIntent.setData(Uri.fromFile(pictureFile));
+                    getApplicationContext().sendBroadcast(mediaScanIntent);
+                    Intent i = new Intent(getApplicationContext(),ResultCameraActivity.class);
+                    i.putExtra("image",pictureFile.getAbsolutePath());
+                    startActivity(i);
+                } catch (FileNotFoundException e) {
+
                 } catch (Exception e) {
 
                 }
 
-                Intent i = new Intent(getApplicationContext(), new ResultCameraActivity().getClass());
-                i.putExtra("image", picturepath);
-                startActivity(i);
 
             } catch (Exception e) {
                 e.getMessage();
@@ -305,83 +305,69 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         } else { // back-facing
             result = (info.orientation - degrees + 360) % 360;
         }
+       //torientation=result;
 
-        camera.setDisplayOrientation(result);
-        camera.getParameters().setRotation(result);
+      //  camera.setDisplayOrientation(result);
+       // camera.getParameters().setRotation(result);
     }
+    private class SaveImageTask extends AsyncTask<byte[], Void, Void> {
+        String TAG ="1";
+        @Override
+        protected Void doInBackground(byte[]... data) {
+            FileOutputStream outStream = null;
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-            /*if(checkrotate) {*/
-               try {
 
+            try {
 
-                double d = event.values[0];
-                if (d < 45 || d > 315) {
-                  //  rotation = 90;
-                    Camera.Parameters parameters = mcamera.getParameters();
-                    if (this.getResources().getConfiguration().orientation !=
-                            Configuration.ORIENTATION_LANDSCAPE) {
-                        parameters.set("orientation", "portrait");
-                        // For Android Version 2.2 and above
-                    //    mcamera.setDisplayOrientation(rotation);
-                        // For Android Version 2.0 and above
-                        parameters.setRotation(90);
-                        mcamera.setParameters(parameters);
-                    }
-                } else if (d <= 135 && d >= 45) {
-             //       rotation = 180;
-                    Camera.Parameters parameters = mcamera.getParameters();
-                    if (this.getResources().getConfiguration().orientation !=
-                            Configuration.ORIENTATION_LANDSCAPE) {
-                        parameters.set("orientation", "portrait");
-                        // For Android Version 2.2 and above
-                      //  mcamera.setDisplayOrientation(rotation);
-                        // For Android Version 2.0 and above
-                        parameters.setRotation(180);
-                        mcamera.setParameters(parameters);
-                    }
-                } else if (d <= 315 && d > 225) {
-           //         rotation = 0;
-                    Camera.Parameters parameters = mcamera.getParameters();
-                    if (this.getResources().getConfiguration().orientation !=
-                            Configuration.ORIENTATION_LANDSCAPE) {
-                        parameters.set("orientation", "portrait");
-                        // For Android Version 2.2 and above
-                       // mcamera.setDisplayOrientation(rotation);
-                        // For Android Version 2.0 and above
-                        parameters.setRotation(0);
-                        mcamera.setParameters(parameters);
-                    }else{
-                        parameters.set("orientation", "landscape");
-                        // For Android Version 2.2 and above
-                        // mcamera.setDisplayOrientation(rotation);
-                        // For Android Version 2.0 and above
-                        parameters.setRotation(0);
-                        mcamera.setParameters(parameters);
-                    }
-                } else {
-             //       rotation = 270;
-                    Camera.Parameters parameters = mcamera.getParameters();
-                    if (this.getResources().getConfiguration().orientation !=
-                            Configuration.ORIENTATION_LANDSCAPE) {
-                        parameters.set("orientation", "portrait");
-                        // For Android Version 2.2 and above
-                      //  mcamera.setDisplayOrientation(rotation);
-                        // For Android Version 2.0 and above
-                        parameters.setRotation(270);
-                        mcamera.setParameters(parameters);
-                    }
+                File path = new File (Environment.getExternalStorageDirectory().getAbsolutePath() + "/");
+                if (!path.exists()) {
+                    path.mkdirs();
                 }
-               }catch (Exception e){
 
-               }
-           /* }*/
+                String fileName = String.format("%d.jpg", System.currentTimeMillis());
+                File outputFile = new File(path, fileName);
+                ExifInterface ef= new ExifInterface(outputFile.getAbsolutePath());
+                ef.setAttribute(ExifInterface.TAG_ORIENTATION,"180");
+                outStream = new FileOutputStream(outputFile);
+                outStream.write(data[0]);
+                outStream.flush();
+                outStream.close();
+
+                Log.d(TAG, "onPictureTaken - wrote bytes: " + data.length + " to "
+                        + outputFile.getAbsolutePath());
+
+
+                mcamera.startPreview();
+
+
+                // 갤러리에 반영
+                Intent mediaScanIntent = new Intent( Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                mediaScanIntent.setData(Uri.fromFile(outputFile));
+                getApplicationContext().sendBroadcast(mediaScanIntent);
+                Intent i = new Intent(getApplicationContext(),ResultCameraActivity.class);
+                i.putExtra("image",outputFile.getAbsolutePath());
+                startActivity(i);
+
+
+                try {
+                    mcamera.setPreviewDisplay(sv_camera_holder);
+                    mcamera.startPreview();
+                    Log.d(TAG, "Camera preview started.");
+                } catch (Exception e) {
+                    Log.d(TAG, "Error starting camera preview: " + e.getMessage());
+                }
+
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
     }
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
 }
 

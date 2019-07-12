@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
+import android.widget.Toast;
 
+import com.aws.testawsapp.OnSwipeTouchListener;
 import com.aws.testawsapp.R;
 
 public class MainActivity extends TabActivity {
@@ -16,6 +19,7 @@ public class MainActivity extends TabActivity {
     TabWidget tw;
     Intent i;
     int lasttab=0;
+    Context ctx;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +77,7 @@ public class MainActivity extends TabActivity {
         // 탭의 선택
         tabHost.getTabWidget().setCurrentTab(0);
         tabHost.setOnTabChangedListener(dd);
+
     }
     TabHost.OnTabChangeListener dd = new TabHost.OnTabChangeListener() {
         @Override

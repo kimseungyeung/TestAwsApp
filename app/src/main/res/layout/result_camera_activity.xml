@@ -3,26 +3,37 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">x
 <ImageView
     android:id="@+id/iv_result"
     android:layout_width="match_parent"
-    android:layout_height="0dip"
-    android:layout_weight="9"/>
+    android:layout_height="match_parent"
+    android:scaleType="fitXY"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dip"
-        android:layout_weight="1"
+        android:layout_height="40dip"
         android:gravity="center"
-        android:background="@color/Grey">
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:background="@color/transparent">
         <Button
+            android:id="@+id/btn_save"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="저장"/>
         <Button
+            android:id="@+id/btn_edit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="수정"/>
         <Button
+            android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="취소"/>
 
     </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

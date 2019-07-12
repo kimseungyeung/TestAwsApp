@@ -17,11 +17,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.aws.testawsapp.Adapter.StoryAdapter;
 import com.aws.testawsapp.Data.CommentData;
 import com.aws.testawsapp.Data.FriendData;
 import com.aws.testawsapp.Data.StoryData;
+import com.aws.testawsapp.OnSwipeTouchListener;
 import com.aws.testawsapp.R;
 
 import java.io.File;
@@ -103,6 +105,13 @@ public class StroyActivity extends AppCompatActivity implements View.OnClickList
         rl_story.setAdapter(sadapter);
         rl_story.setLayoutManager(new LinearLayoutManager(this));
 
+        rl_story.setOnTouchListener(new OnSwipeTouchListener(this){
+            @Override
+            public void onSwipeRight() {
+                super.onSwipeRight();
+                Toast.makeText(getApplicationContext(),"ddd",Toast.LENGTH_LONG).show();
+            }
+        });
     }
     public Bitmap getBitmap(Uri uri){
         Bitmap bitmap = null;
