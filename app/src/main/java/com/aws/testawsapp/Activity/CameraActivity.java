@@ -34,6 +34,7 @@ import android.widget.ImageButton;
 import android.hardware.Camera;
 
 import com.aws.testawsapp.Data.CommentData;
+import com.aws.testawsapp.OnSwipeTouchListener;
 import com.aws.testawsapp.R;
 
 import java.io.ByteArrayOutputStream;
@@ -108,7 +109,19 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         };
         orientationEventListener.enable();
         mCameraInfo = cameraInfo;
+        sv_camera_view.setOnTouchListener(new OnSwipeTouchListener(this){
+            @Override
+            public void onSwipeLeft() {
+                super.onSwipeLeft();
 
+            }
+
+            @Override
+            public void onSwipeRight() {
+                super.onSwipeRight();
+                finish();
+            }
+        });
     }
 
     @Override

@@ -3,7 +3,10 @@ package com.aws.testawsapp.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +46,7 @@ public class StroyActivity extends AppCompatActivity implements View.OnClickList
     ImageButton imbtn_camera;
     private String imageFilePath;
     private Uri photoUri;
+    String timeStamp;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,11 +111,22 @@ public class StroyActivity extends AppCompatActivity implements View.OnClickList
 
         rl_story.setOnTouchListener(new OnSwipeTouchListener(this){
             @Override
+            public void onSwipeLeft() {
+                super.onSwipeLeft();
+
+            }
+
+            @Override
             public void onSwipeRight() {
                 super.onSwipeRight();
-                Toast.makeText(getApplicationContext(),"ddd",Toast.LENGTH_LONG).show();
+                Intent i = new Intent(StroyActivity.this,CameraActivity.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                overridePendingTransition(R.anim.slide_left_anim,R.anim.slide_right_anim);
+                startActivity(i);
+
             }
         });
+
     }
     public Bitmap getBitmap(Uri uri){
         Bitmap bitmap = null;
@@ -177,7 +192,7 @@ public class StroyActivity extends AppCompatActivity implements View.OnClickList
                 src.getHeight(), matrix, true);
     }
     private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+         timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "TEST_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
@@ -219,6 +234,12 @@ public class StroyActivity extends AppCompatActivity implements View.OnClickList
                 FileOutputStream out = new FileOutputStream(Environment.getExternalStorageDirectory().getAbsolutePath() + "/test.jpg");
                 resultbit.compress(Bitmap.CompressFormat.JPEG, 100, out);
                 out.close();
+                Canvas c= new Canvas(resultbit);
+                Paint p = new Paint();
+                p.setStyle(Paint.Style.FILL);
+                p.setColor(Color.BLACK);
+                p.setTextSize(40);
+                c.drawText(timeStamp,c.getWidth()/2,c.getHeight()/2,p);
             } catch (Exception e) {
 
             }
