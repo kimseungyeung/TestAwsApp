@@ -40,6 +40,7 @@
         <activity android:name=".Activity.Tab4Activity"/>
         <activity android:name=".Activity.CameraActivity"/>
         <activity android:name=".Activity.ResultCameraActivity"/>
+        <activity android:name=".Activity.StoryPageActivity"/>
     </application>
 
 </manifest>

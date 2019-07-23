@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
@@ -126,7 +127,22 @@ public class StroyActivity extends AppCompatActivity implements View.OnClickList
 
             }
         });
+        rl_story.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
 
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int lastvisiblepsition =((LinearLayoutManager)rl_story.getLayoutManager()).findLastCompletelyVisibleItemPosition();
+                int itemTotalCount =recyclerView.getAdapter().getItemCount();
+                if(lastvisiblepsition==itemTotalCount){
+
+                }
+            }
+        });
     }
     public Bitmap getBitmap(Uri uri){
         Bitmap bitmap = null;
