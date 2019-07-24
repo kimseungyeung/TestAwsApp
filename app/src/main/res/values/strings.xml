@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TestAwsApp</string>
+    <string name="trans">trans</string>
 </resources>

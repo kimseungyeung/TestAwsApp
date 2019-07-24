@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/ll_main_page"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/skyblue"
-    android:padding="10dip">
-<ImageView
-    android:id="@+id/iv_main_image"
-    android:layout_width="match_parent"
-    android:layout_height="300dip"
-    android:transitionName="trans"
-    android:background="@color/white"/>
+   >
     <TextView
-        android:id="@+id/tv_imagename"
+        android:id="@+id/tv_view_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="안녕하세요"
-        android:gravity="center"
+        android:background="@color/white"/>
+<ImageView
+    android:id="@+id/iv_view_image"
+    android:layout_width="match_parent"
+    android:layout_height="300dip"
+    android:transitionName="trans"/>
+    <TextView
+        android:id="@+id/tv_view_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white"/>
 </LinearLayout>

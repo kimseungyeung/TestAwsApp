@@ -1,5 +1,6 @@
 package com.aws.testawsapp.Activity;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +22,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.aws.testawsapp.Adapter.StoryAdapter;
@@ -48,6 +50,7 @@ public class StroyActivity extends AppCompatActivity implements View.OnClickList
     private String imageFilePath;
     private Uri photoUri;
     String timeStamp;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,9 +124,9 @@ public class StroyActivity extends AppCompatActivity implements View.OnClickList
             public void onSwipeRight() {
                 super.onSwipeRight();
                 Intent i = new Intent(StroyActivity.this,CameraActivity.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                overridePendingTransition(R.anim.slide_left_anim,R.anim.slide_right_anim);
-                startActivity(i);
+                ActivityOptions options = ActivityOptions.makeCustomAnimation(getApplicationContext(),R.anim.slide_left_anim,R.anim.slide_right_anim);
+
+                startActivity(i,options.toBundle());
 
             }
         });

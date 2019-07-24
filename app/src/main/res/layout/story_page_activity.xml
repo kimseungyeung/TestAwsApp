@@ -32,7 +32,18 @@
             android:layout_height="match_parent"
 
             />
-
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_pb"
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:visibility="gone">
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"/>
+    </LinearLayout>
+
 
 </LinearLayout>
