@@ -40,8 +40,12 @@
         <activity android:name=".Activity.Tab4Activity"/>
         <activity android:name=".Activity.CameraActivity"/>
         <activity android:name=".Activity.ResultCameraActivity"/>
-        <activity android:name=".Activity.StoryPageActivity"/>
-        <activity android:name=".Activity.StoryViewActivity"/>
+        <activity android:name=".Activity.StoryPageActivity"
+            android:label="test"
+            android:theme="@style/BaseAppTheme"/>
+        <activity android:name=".Activity.StoryViewActivity"
+            android:label="test"
+            android:theme="@style/BaseAppTheme"/>
     </application>
 
 </manifest>

@@ -3,8 +3,10 @@ package com.aws.testawsapp.Activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.ChangeBounds;
 import android.transition.Explode;
@@ -14,6 +16,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.aws.testawsapp.Adapter.StoryPageAdapter;
 import com.aws.testawsapp.R;
 
 public class StoryViewActivity extends AppCompatActivity {
@@ -25,8 +28,9 @@ public class StoryViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.story_view_activity);
 
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        setContentView(R.layout.story_view_activity);
         title=getIntent().getStringExtra("title");
         text=getIntent().getStringExtra("text");
         iid=getIntent().getIntExtra("imageid",0);
@@ -35,7 +39,8 @@ public class StoryViewActivity extends AppCompatActivity {
     }
     public void component(){
         iv_main_image=(ImageView)findViewById(R.id.iv_view_image);
-        iv_main_image.setTransitionName(title);
+       // iv_main_image.setTransitionName(title);
+        ViewCompat.setTransitionName(iv_main_image,title);
         tv_title=(TextView)findViewById(R.id.tv_view_title);
         tv_text=(TextView)findViewById(R.id.tv_view_text);
         BitmapDrawable bd= (BitmapDrawable) getApplicationContext().getResources().getDrawable(iid);

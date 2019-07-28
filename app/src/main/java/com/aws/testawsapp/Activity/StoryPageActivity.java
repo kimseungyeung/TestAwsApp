@@ -1,5 +1,6 @@
 package com.aws.testawsapp.Activity;
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -42,6 +43,7 @@ public class StoryPageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().requestFeature(android.view.Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.story_page_activity);
         component();
     }
@@ -89,12 +91,12 @@ public class StoryPageActivity extends AppCompatActivity {
             public void onClick(View view, int position, StoryPageData sd) {
                 ActivityOptions options=ActivityOptions.makeSceneTransitionAnimation(StoryPageActivity.this,view,sd.getTitle());
 
-                Intent i =new Intent(StoryPageActivity.this,StoryViewActivity.class);
+                Intent i =new Intent(getApplicationContext(),StoryViewActivity.class);
                 i.putExtra("title",sd.getTitle());
                 i.putExtra("text",sd.getText());
                 i.putExtra("imageid",bit[position%10]);
 
-                startActivity(i,options.toBundle());
+               startActivity(i,options.toBundle());
 
             }
         });

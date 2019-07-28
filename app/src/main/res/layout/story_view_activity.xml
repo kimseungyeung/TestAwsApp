@@ -15,6 +15,7 @@
     android:id="@+id/iv_view_image"
     android:layout_width="match_parent"
     android:layout_height="300dip"
+    android:scaleType="fitXY"
    />
     <TextView
         android:id="@+id/tv_view_text"
