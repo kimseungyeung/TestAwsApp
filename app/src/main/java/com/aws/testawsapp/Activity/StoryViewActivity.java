@@ -6,7 +6,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.ChangeBounds;
+import android.transition.Explode;
+import android.transition.Transition;
 import android.view.Window;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,7 +25,6 @@ public class StoryViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.story_view_activity);
 
         title=getIntent().getStringExtra("title");
@@ -32,7 +35,7 @@ public class StoryViewActivity extends AppCompatActivity {
     }
     public void component(){
         iv_main_image=(ImageView)findViewById(R.id.iv_view_image);
-
+        iv_main_image.setTransitionName(title);
         tv_title=(TextView)findViewById(R.id.tv_view_title);
         tv_text=(TextView)findViewById(R.id.tv_view_text);
         BitmapDrawable bd= (BitmapDrawable) getApplicationContext().getResources().getDrawable(iid);
@@ -40,4 +43,6 @@ public class StoryViewActivity extends AppCompatActivity {
         tv_title.setText(title);
         tv_text.setText(text);
     }
+
+
 }

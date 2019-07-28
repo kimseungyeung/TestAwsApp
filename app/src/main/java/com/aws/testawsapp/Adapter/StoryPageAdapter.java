@@ -3,6 +3,7 @@ package com.aws.testawsapp.Adapter;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -87,6 +88,7 @@ public class StoryPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         ((Holder2)holder).iv_main_image.setImageBitmap(storyDataList.get(position).getImage());
 
         ((Holder2)holder).tv_story_name.setText(storyDataList.get(position).getTitle());
+        ViewCompat.setTransitionName(((Holder2) holder).iv_main_image,storyDataList.get(position).getTitle());
         ((Holder2)holder).iv_main_image.setOnClickListener(this);
         if((position>=totalcount-10&&totalcount!=137)||totalcount==137) {
             setAnimation(((Holder2) holder).ll_main, position);

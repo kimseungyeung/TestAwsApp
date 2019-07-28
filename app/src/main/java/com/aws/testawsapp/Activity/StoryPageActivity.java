@@ -70,7 +70,7 @@ public class StoryPageActivity extends AppCompatActivity {
                 int lastVisibleItemPosition=((LinearLayoutManager)rl_page_story.getLayoutManager()).findLastCompletelyVisibleItemPosition()+1;
                 int itemtotalcount =rl_page_story.getAdapter().getItemCount();
                 if(lastVisibleItemPosition==itemtotalcount) {
-                    new moreloadingTask().execute();
+                    //new moreloadingTask().execute();
                 }
             }
 
@@ -87,9 +87,9 @@ public class StoryPageActivity extends AppCompatActivity {
         spdapter.setItemClick(new StoryPageAdapter.ItemClick() {
             @Override
             public void onClick(View view, int position, StoryPageData sd) {
-                ActivityOptions options=ActivityOptions.makeSceneTransitionAnimation(StoryPageActivity.this,view,"trans");
+                ActivityOptions options=ActivityOptions.makeSceneTransitionAnimation(StoryPageActivity.this,view,sd.getTitle());
 
-                Intent i =new Intent(getApplicationContext(),StoryViewActivity.class);
+                Intent i =new Intent(StoryPageActivity.this,StoryViewActivity.class);
                 i.putExtra("title",sd.getTitle());
                 i.putExtra("text",sd.getText());
                 i.putExtra("imageid",bit[position%10]);
