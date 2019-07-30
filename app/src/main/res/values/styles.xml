@@ -9,15 +9,19 @@
         <!-- No Title Bar-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-
+        <item name="android:windowContentTransitions"> true </item >
     </style>
-    <style name="BaseAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BaseTheme" parent="android:Theme.Material.Light.DarkActionBar">
 
+        <item name="android:colorPrimary">#D32F2F</item>
+        <item name="android:textColorPrimary">#616161</item>
+        <item name="android:colorPrimaryDark">#B71C1C</item>
+        <item name="android:colorAccent">#757575</item>
+        <item name="android:colorControlHighlight">#EF9A9A</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowAllowEnterTransitionOverlap">true</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowSharedElementEnterTransition">@android:transition/move</item>
-        <item name="android:windowSharedElementExitTransition">@android:transition/move</item>
-
+        <item name="android:windowSharedElementEnterTransition">
+            @transition/shared_element_transation</item>
+        <item name="android:windowSharedElementExitTransition">
+            @transition/shared_element_transation</item>
     </style>
-</resources>
+  </resources>

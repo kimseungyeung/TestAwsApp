@@ -2,6 +2,8 @@ package com.aws.testawsapp.Activity;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.SharedElementCallback;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,12 +13,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Explode;
+import android.transition.TransitionInflater;
 import android.util.Pair;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
@@ -28,6 +35,8 @@ import com.aws.testawsapp.Data.StoryPageData;
 import com.aws.testawsapp.R;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class StoryPageActivity extends AppCompatActivity {
     RecyclerView rl_page_story;
@@ -40,14 +49,17 @@ public class StoryPageActivity extends AppCompatActivity {
     ProgressBar pb_loading;
     LinearLayout ll_pb;
     int limitcount=137;
+    LinearLayout ll_main;
+    Context context;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().requestFeature(android.view.Window.FEATURE_CONTENT_TRANSITIONS);
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.story_page_activity);
         component();
     }
     public void component(){
+        context =this;
         nowspdlist=new ArrayList<>();
         pb_loading= (ProgressBar)findViewById(R.id.pb_loading);
         ll_pb=(LinearLayout)findViewById(R.id.ll_pb);
@@ -72,7 +84,7 @@ public class StoryPageActivity extends AppCompatActivity {
                 int lastVisibleItemPosition=((LinearLayoutManager)rl_page_story.getLayoutManager()).findLastCompletelyVisibleItemPosition()+1;
                 int itemtotalcount =rl_page_story.getAdapter().getItemCount();
                 if(lastVisibleItemPosition==itemtotalcount) {
-                    //new moreloadingTask().execute();
+                    new moreloadingTask().execute();
                 }
             }
 
@@ -89,18 +101,21 @@ public class StoryPageActivity extends AppCompatActivity {
         spdapter.setItemClick(new StoryPageAdapter.ItemClick() {
             @Override
             public void onClick(View view, int position, StoryPageData sd) {
-                ActivityOptions options=ActivityOptions.makeSceneTransitionAnimation(StoryPageActivity.this,view,sd.getTitle());
 
-                Intent i =new Intent(getApplicationContext(),StoryViewActivity.class);
+
+
+                Intent i =new Intent(StoryPageActivity.this,StoryViewActivity.class);
                 i.putExtra("title",sd.getTitle());
                 i.putExtra("text",sd.getText());
                 i.putExtra("imageid",bit[position%10]);
-
-               startActivity(i,options.toBundle());
+                Pair<View,String> pair =Pair.create(view,ViewCompat.getTransitionName(view));
+                ActivityOptions options=ActivityOptions.makeSceneTransitionAnimation(StoryPageActivity.this,pair);
+          ActivityCompat.startActivity(StoryPageActivity.this,i,options.toBundle());
 
             }
         });
     }
+
     Handler h = new Handler();
     public class moreloadingTask extends AsyncTask<Integer,Integer,Boolean> {
         @Override

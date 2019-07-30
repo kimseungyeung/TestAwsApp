@@ -41,11 +41,10 @@
         <activity android:name=".Activity.CameraActivity"/>
         <activity android:name=".Activity.ResultCameraActivity"/>
         <activity android:name=".Activity.StoryPageActivity"
-            android:label="test"
-            android:theme="@style/BaseAppTheme"/>
+           />
         <activity android:name=".Activity.StoryViewActivity"
-            android:label="test"
-            android:theme="@style/BaseAppTheme"/>
+            android:theme="@style/BaseTheme"
+            />
     </application>
 
 </manifest>
