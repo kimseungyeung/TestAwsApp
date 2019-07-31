@@ -8,22 +8,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_marginLeft="10dip"
+
         android:layout_weight="0.7"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:background="@color/Grey">
 
         <ImageButton
             android:id="@+id/imbtn_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
+            android:layout_marginLeft="10dip"
             android:src="@drawable/camera_icon_selector" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="9.3">
+        android:layout_weight="9.3"
+        >
 
 
         <android.support.v7.widget.RecyclerView

@@ -6,16 +6,20 @@ import android.app.SharedElementCallback;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -48,13 +52,15 @@ public class StoryPageActivity extends AppCompatActivity {
     boolean idlecheck=true;
     ProgressBar pb_loading;
     LinearLayout ll_pb;
-    int limitcount=137;
+    int limitcount=21;
     LinearLayout ll_main;
     Context context;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        setExitSharedElementCallback(shcall);
         setContentView(R.layout.story_page_activity);
         component();
     }
@@ -102,15 +108,15 @@ public class StoryPageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position, StoryPageData sd) {
 
-
-
-                Intent i =new Intent(StoryPageActivity.this,StoryViewActivity.class);
+                View v = (View) view.getParent();
+                v.startAnimation(AnimationUtils.loadAnimation(context,R.anim.bounce));
+                Intent i =new Intent(MainActivity.ctx,StoryViewActivity.class);
                 i.putExtra("title",sd.getTitle());
                 i.putExtra("text",sd.getText());
                 i.putExtra("imageid",bit[position%10]);
                 Pair<View,String> pair =Pair.create(view,ViewCompat.getTransitionName(view));
-                ActivityOptions options=ActivityOptions.makeSceneTransitionAnimation(StoryPageActivity.this,pair);
-          ActivityCompat.startActivity(StoryPageActivity.this,i,options.toBundle());
+                ActivityOptions options=ActivityOptions.makeSceneTransitionAnimation((Activity) MainActivity.ctx,pair);
+          ActivityCompat.startActivity(MainActivity.ctx,i,options.toBundle());
 
             }
         });
@@ -161,5 +167,36 @@ public class StoryPageActivity extends AppCompatActivity {
             ll_pb.setVisibility(View.GONE);
         }
     }
+    SharedElementCallback shcall = new SharedElementCallback() {
+        @Override
+        public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+            super.onMapSharedElements(names, sharedElements);
 
+        }
+
+        @Override
+        public void onRejectSharedElements(List<View> rejectedSharedElements) {
+            super.onRejectSharedElements(rejectedSharedElements);
+        }
+
+        @Override
+        public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+            super.onSharedElementStart(sharedElementNames, sharedElements, sharedElementSnapshots);
+        }
+
+        @Override
+        public View onCreateSnapshotView(Context context, Parcelable snapshot) {
+            return super.onCreateSnapshotView(context, snapshot);
+        }
+
+        @Override
+        public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+            super.onSharedElementEnd(sharedElementNames, sharedElements, sharedElementSnapshots);
+        }
+
+        @Override
+        public Parcelable onCaptureSharedElementSnapshot(View sharedElement, Matrix viewToGlobalMatrix, RectF screenBounds) {
+            return super.onCaptureSharedElementSnapshot(sharedElement, viewToGlobalMatrix, screenBounds);
+        }
+    };
 }

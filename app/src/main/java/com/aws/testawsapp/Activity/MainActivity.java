@@ -4,6 +4,8 @@ import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.transition.Fade;
+import android.transition.Transition;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,17 +21,22 @@ public class MainActivity extends TabActivity {
     TabWidget tw;
     Intent i;
     int lasttab=0;
-    Context ctx;
+    public static Context ctx;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setAllowEnterTransitionOverlap(true);
+        getWindow().setAllowReturnTransitionOverlap(true);
         setContentView(R.layout.activity_main);
+
         component();
+
+
     }
     public void component(){
          i=   new Intent(this, new CameraActivity().getClass());
         tabHost = (TabHost) findViewById(android.R.id.tabhost);
-
+        ctx=this;
         /** 새로운 탭을 추가하기 위한 TabSpect */
         TabHost.TabSpec TabSpec = tabHost.newTabSpec("tid1");
         TabHost.TabSpec Tab2Spec = tabHost.newTabSpec("tid2");
@@ -48,6 +55,7 @@ public class MainActivity extends TabActivity {
        Intent ii= new Intent(getApplicationContext(),
                 Tab3Activity.class)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
         TabSpec.setContent(new Intent(this, new StoryPageActivity().getClass()));
         Tab2Spec.setIndicator(bv2);
         Tab2Spec.setContent(new Intent(this, new Tab2Activity().getClass()));

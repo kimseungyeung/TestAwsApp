@@ -11,8 +11,10 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.ChangeBounds;
 import android.transition.ChangeImageTransform;
@@ -43,7 +45,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.Inflater;
 
-public class StoryViewActivity extends Activity {
+public class StoryViewActivity extends AppCompatActivity {
     String title, text;
     Bitmap image;
     ImageView iv_main_image;
@@ -54,24 +56,26 @@ public class StoryViewActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // supportPostponeEnterTransition();
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         getWindow().setAllowEnterTransitionOverlap(true);
         getWindow().setAllowReturnTransitionOverlap(true);
- /*       getWindow().setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(R.transition.shared_element_transation));
+
+        getWindow().setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(R.transition.shared_element_transation));
         getWindow().setSharedElementExitTransition(TransitionInflater.from(this).inflateTransition(R.transition.shared_element_transation));
-        getWindow().getSharedElementEnterTransition().setDuration(1000);
-        getWindow().getSharedElementReturnTransition().setDuration(1000)
+    /*    getWindow().getSharedElementEnterTransition().setDuration(500);
+        getWindow().getSharedElementReturnTransition().setDuration(500)
                 .setInterpolator(new DecelerateInterpolator());*/
        // addTransitionListener();
 
+
         setContentView(R.layout.story_view_activity);
+
+        setEnterSharedElementCallback(shcall);
 
 
         title = getIntent().getStringExtra("title");
         text = getIntent().getStringExtra("text");
         iid = getIntent().getIntExtra("imageid", 0);
-
         component();
 
         ViewTreeObserver observer = getWindow().getDecorView().getViewTreeObserver();
@@ -95,27 +99,22 @@ public class StoryViewActivity extends Activity {
     public void onEnterAnimationComplete() {
         super.onEnterAnimationComplete();
 
+
     }
 
     public void component() {
         ll_main_view = (LinearLayout) findViewById(R.id.ll_main_view);
         context=StoryViewActivity.this;
-        iv_main_image = (ImageView) findViewById(R.id.iv_main_image);
+        iv_main_image = (ImageView) findViewById(R.id.iv_view_image);
         tv_title = (TextView) findViewById(R.id.tv_view_title);
         tv_text = (TextView) findViewById(R.id.tv_view_text);
         ViewCompat.setTransitionName(iv_main_image,title);
         tv_title.setText(title);
         tv_text.setText(text);
-
-
-        /*Animation anim=AnimationUtils.loadAnimation(context,R.anim.fade_in);
-        ll_main_view.setAnimation(anim);*/
-        //getWindow().setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(R.transition.shared_element_transation));
-
         BitmapDrawable bd = (BitmapDrawable) context.getResources().getDrawable(iid);
         iv_main_image.setImageBitmap(bd.getBitmap());
 
-       // iv_main_image.setTransitionName(title);
+
 
 
     }
@@ -126,5 +125,40 @@ public class StoryViewActivity extends Activity {
         super.onBackPressed();
 
     }
+    SharedElementCallback shcall = new SharedElementCallback() {
+        @Override
+        public void onMapSharedElements(List<String> names, Map<String, View> sharedElements) {
+            View keySharedElementView = sharedElements.get(title);
+            names.clear();
+            sharedElements.clear();
+            names.add(title);
+            sharedElements.put(title,keySharedElementView);
+            super.onMapSharedElements(names, sharedElements);
 
+
+
+
+
+        }
+
+        @Override
+        public void onRejectSharedElements(List<View> rejectedSharedElements) {
+            super.onRejectSharedElements(rejectedSharedElements);
+        }
+
+        @Override
+        public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+            super.onSharedElementStart(sharedElementNames, sharedElements, sharedElementSnapshots);
+        }
+
+        @Override
+        public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+            super.onSharedElementEnd(sharedElementNames, sharedElements, sharedElementSnapshots);
+        }
+
+        @Override
+        public View onCreateSnapshotView(Context context, Parcelable snapshot) {
+            return super.onCreateSnapshotView(context, snapshot);
+        }
+    };
 }
