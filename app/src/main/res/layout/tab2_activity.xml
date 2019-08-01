@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="vm"
+            type="com.aws.testawsapp.viewmodel.MainViewModel" />
+    </data>
+<LinearLayout
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
-<!--<data >
-    <variable
-        android:name="vm"
-        android:type="com.aws.testawsapp.ViewModel.MainViewModel"/>
-</data>-->
 
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@{vm.title}"
-    android:textSize="20sp"/>
-    <ImageView
-        android:id="@+id/iv_a"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/test1"/>
+
+<android.support.v7.widget.RecyclerView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:items="@{vm.}"/>
 </LinearLayout>
+</layout>

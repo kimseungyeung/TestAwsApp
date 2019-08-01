@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="vm"
+            type="com.aws.testawsapp.viewmodel.MainViewModel" />
+    </data>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:padding="10dip">
+<LinearLayout
+    android:id="@+id/ll_main_page"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/round"
+    android:padding="7dip"
+    >
+<ImageView
+    android:id="@+id/iv_main_image"
+    android:layout_width="match_parent"
+    android:layout_height="300dip"
+    android:background="@color/white"
+    android:src="@{vm.bit}"
+    android:scaleType="fitXY"/>
+    <TextView
+        android:id="@+id/tv_imagename"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="안녕하세요"
+        android:gravity="center"
+        android:background="@{vm.title}"/>
+</LinearLayout>
+</RelativeLayout>
+</layout>
