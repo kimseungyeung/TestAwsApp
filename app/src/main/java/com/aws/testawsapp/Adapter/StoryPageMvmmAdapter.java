@@ -1,42 +1,31 @@
 package com.aws.testawsapp.Adapter;
 
-import android.app.SharedElementCallback;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.aws.testawsapp.Data.CommentData;
-import com.aws.testawsapp.Data.FriendData;
-import com.aws.testawsapp.Data.StoryData;
 import com.aws.testawsapp.Data.StoryPageData;
 import com.aws.testawsapp.R;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class StoryPageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
+public class StoryPageMvmmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements View.OnClickListener {
     private ItemClick itemClick;
     Context context;
     List<StoryPageData> storyDataList;
     int totalcount=0;
     int selectidx=0;
-    public StoryPageAdapter(List<StoryPageData> sdatalist, Context ctx) {
+    public StoryPageMvmmAdapter(List<StoryPageData> sdatalist, Context ctx) {
         this.storyDataList = sdatalist;
         this.context = ctx;
         totalcount=sdatalist.size();
